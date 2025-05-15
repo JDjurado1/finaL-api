@@ -12,13 +12,12 @@ public class Post {
     private Long id;
 
     @Column(nullable = false)
+    private String author;
+
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String content;
 
-    @Column(nullable = true)
     private String imageUrl;
-
-    @Column(nullable = false, updatable = false)
-    private String author;
 
     @Column(nullable = false)
     private LocalDateTime createdAt;
@@ -26,18 +25,11 @@ public class Post {
     @Column(nullable = false)
     private LocalDateTime updatedAt;
 
-    public Post() {}
-
-    public Post(String content, String imageUrl, String author) {
-        this.content = content;
-        this.imageUrl = imageUrl;
-        this.author = author;
-    }
-
     @PrePersist
     protected void onCreate() {
-        this.createdAt = LocalDateTime.now();
-        this.updatedAt = LocalDateTime.now();
+        LocalDateTime now = LocalDateTime.now();
+        this.createdAt = now;
+        this.updatedAt = now;
     }
 
     @PreUpdate
@@ -45,7 +37,16 @@ public class Post {
         this.updatedAt = LocalDateTime.now();
     }
 
-    // --- Getters and Setters ---
+    // Constructors
+    public Post() {}
+
+    public Post(String author, String content, String imageUrl) {
+        this.author = author;
+        this.content = content;
+        this.imageUrl = imageUrl;
+    }
+
+    // Getters and setters for all fields, including updatedAt
 
     public Long getId() {
         return id;
@@ -53,6 +54,14 @@ public class Post {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
     }
 
     public String getContent() {
@@ -71,27 +80,15 @@ public class Post {
         this.imageUrl = imageUrl;
     }
 
-    public String getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(String author) {
-        this.author = author;
-    }
-
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
+    // No setter for createdAt as it's managed automatically
 
     public LocalDateTime getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
-    }
+    // No setter for updatedAt, managed automatically
 }
